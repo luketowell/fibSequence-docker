@@ -5,12 +5,13 @@ const cors = require('cors');
 
 // Express app setup
 const app = express();
-
 app.use(cors());
 app.use(bodyParser.json());
+
 app.get('/', (req, res) => {
     res.status(200).send('pong')
 })
+
 app.get('/ping', (req, res) => {
     res.status(200).send('pong')
 })
@@ -40,9 +41,6 @@ app.post('/values', async (req, res) => {
 
     res.send({working:true});
     }
-
-
-
 })
 
 app.listen(5000, () => {
