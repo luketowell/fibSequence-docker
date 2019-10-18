@@ -3,22 +3,24 @@ services:
   - docker
 
 before-install:
-  - docker build -t luketowell/react-test -f ./client/Dockerfile.dev ./client
-  - docker build -t luketowell/worker-test -f ./worker/Dockerfile.dev ./worker
+  - docker build -t "$DOCKER_ID"/react-test -f ./client/Dockerfile.dev ./client
+  - docker build -t "$DOCKER_ID"/worker-test -f ./worker/Dockerfile.dev ./worker
 
 script:
-  - docker run -e CI=true luketowell/react-test npm test
-  - docker run -e CI=true luketowell/worker-test npm run test
+  - docker run -e CI=true "$DOCKER_ID"/react-test npm test
+  - docker run -e CI=true "$DOCKER_ID"/worker-test npm run test
 
 after-success:
-  - docker build -t luketowell/multi-client ./client
-  - docker build -t luketowell/multi-nginx ./nginx
-  - docker build -t luketowell/multi-server ./server
-  - docker build -t luketowell/multi-worker ./worker
+  - docker build -t "$DOCKER_ID"/multi-client ./client
+  - docker build -t "$DOCKER_ID"/multi-nginx ./nginx
+  - docker build -t "$DOCKER_ID"/multi-server ./server
+  - docker build -t "$DOCKER_ID"/multi-worker ./worker
+
   # log in to docker hub using encrypted complex
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin "$DOCKER_PASSWORD"
+
   # push all generated images to docker
-  - docker push luketowell/multi-client
-  - docker push luketowell/multi-nginx
-  - docker push luketowell/multi-server
-  - docker push luketowell/multi-worker
+  - docker push "$DOCKER_ID"/multi-client
+  - docker push "$DOCKER_ID"/multi-nginx
+  - docker push "$DOCKER_ID"/multi-server
+  - docker push "$DOCKER_ID"/multi-worker
