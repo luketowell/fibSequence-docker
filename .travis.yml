@@ -17,7 +17,7 @@ after_success:
   - docker build -t "$DOCKER_ID"/multi-worker ./worker
 
   # log in to docker hub using encrypted complex
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin "$DOCKER_PASSWORD"
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
 
   # push all generated images to docker
   - docker push "$DOCKER_ID"/multi-client
